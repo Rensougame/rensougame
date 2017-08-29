@@ -82,7 +82,7 @@
     <Compile Include="Assets\Scripts\GameManag.cs" />
     <Compile Include="Assets\Scripts\LetterSpacing.cs" />
     <Compile Include="Assets\Scripts\SceneManage.cs" />
-    <Compile Include="Assets\Terasurware\Classes\Entity_Sheet1.cs" />
+    <Compile Include="Assets\Terasurware\Classes\Sheet1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Terasurware\Editor\EntityTemplate.txt" />

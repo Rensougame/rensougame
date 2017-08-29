@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a1f8430cd35db0449742194122fc5d7, type: 3}
-  m_Name: Book
-  m_EditorClassIdentifier: 
-  sheets: []
+  m_Script: {fileID: 0}
+  m_Name: Sheet1
+  m_EditorClassIdentifier: Assembly-CSharp::Sheet1
+  param: []
