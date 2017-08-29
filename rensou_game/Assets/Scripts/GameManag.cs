@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 /// <summary>
 /// メイン画面での各種データを扱う
@@ -25,6 +27,10 @@ public class GameManag : MonoBehaviour {
     //スキップした数
     public int skipped_num;
 
+    public Text[] hinttext;
+
+    public Entity_Sheet1 m_Book;
+
     // Use this for initialization
     void Start () {
         //最初はどちらも等しく
@@ -33,8 +39,10 @@ public class GameManag : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        hinttext[0].text = m_Book.sheets[0].list[0].hint1;
+
+
+    }
 
     //**********************************************
     //パブリック関数
