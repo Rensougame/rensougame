@@ -28,7 +28,7 @@ public class GameManag : MonoBehaviour {
     public int skipped_num;
 
     //ヒントを出すText
-    public Text[] hinttext;
+    public Text[] m_hinttext;
 
     //excelを読み込んだデータ
     public Sheet1 m_Book;
@@ -43,13 +43,13 @@ public class GameManag : MonoBehaviour {
     int Hint_num_max = 5;
 
     //入力text
-    public InputField inputField;
+    public InputField m_inputField;
 
     // Use this for initialization
     void Start () {
         //最初はどちらも等しく
         remaining_problem_num = problem_num;
-
+        m_inputField.ActivateInputField();
         startup_hint(1, Hint_num);
     }
 	
@@ -69,19 +69,19 @@ public class GameManag : MonoBehaviour {
             switch (num)
             {
                 case 1:
-                    hinttext[0].text = m_Book.param[ID].hint1;
+                    m_hinttext[0].text = m_Book.param[ID].hint1;
                     break;
                 case 2:
-                    hinttext[1].text = m_Book.param[ID].hint2;
+                    m_hinttext[1].text = m_Book.param[ID].hint2;
                     break;
                 case 3:
-                    hinttext[2].text = m_Book.param[ID].hint3;
+                    m_hinttext[2].text = m_Book.param[ID].hint3;
                     break;
                 case 4:
-                    hinttext[3].text = m_Book.param[ID].hint4;
+                    m_hinttext[3].text = m_Book.param[ID].hint4;
                     break;
                 case 5:
-                    hinttext[4].text = m_Book.param[ID].hint5;
+                    m_hinttext[4].text = m_Book.param[ID].hint5;
                     break;
                 default:
                     break;
@@ -107,6 +107,7 @@ public class GameManag : MonoBehaviour {
             startup_hint(Hint_num);
             hint_additional_num++;
         }
+        m_inputField.ActivateInputField();
     }
 
     //スッキプした数を増やす
@@ -118,7 +119,7 @@ public class GameManag : MonoBehaviour {
     //文字判定
     public void letter_decision()
     {
-        if (m_Book.param[ID].answer == inputField.text)
+        if (m_Book.param[ID].answer1 == m_inputField.text || m_Book.param[ID].answer2 == m_inputField.text)
         {
             Debug.Log("正解！");
         }

@@ -373,7 +373,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 584567993}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1216728194}
+        m_MethodName: letter_decision
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &584567993
@@ -769,14 +780,14 @@ MonoBehaviour:
   hint_additional_num: 0
   skip_num: 0
   skipped_num: 0
-  hinttext:
+  m_hinttext:
   - {fileID: 1339468082}
   - {fileID: 1411873472}
   - {fileID: 840980929}
   - {fileID: 1945594374}
   - {fileID: 607644587}
   m_Book: {fileID: 11400000, guid: 544132559582efa4ba5842bac0bf5086, type: 2}
-  inputField: {fileID: 1229992858}
+  m_inputField: {fileID: 1229992858}
 --- !u!4 &1216728195
 Transform:
   m_ObjectHideFlags: 0
@@ -876,18 +887,7 @@ MonoBehaviour:
   m_CharacterLimit: 9
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1216728194}
-        m_MethodName: letter_decision
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.InputField+SubmitEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:

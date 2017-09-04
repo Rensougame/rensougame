@@ -16,6 +16,7 @@ public class Sheet1 : ScriptableObject
 		public string hint3;
 		public string hint4;
 		public string hint5;
-		public string answer;
+		public string answer1;
+		public string answer2;
 	}
 }

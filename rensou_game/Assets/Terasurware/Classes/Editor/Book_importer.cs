@@ -64,7 +64,8 @@ public class Book_importer : AssetPostprocessor
 					cell = row.GetCell(3); p.hint3 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(4); p.hint4 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(5); p.hint5 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(6); p.answer = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(6); p.answer1 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(7); p.answer2 = (cell == null ? "" : cell.StringCellValue);
 
                         data.param.Add(p);
                     }
