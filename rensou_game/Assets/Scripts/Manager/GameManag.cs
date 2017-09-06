@@ -44,6 +44,8 @@ public class GameManag : MonoBehaviour {
     public Image incorrectImage;
     //終了Image
     public Image endImage;
+    //背景Image
+    public Image backImage;
 
 
     //excelを読み込んだデータ
@@ -53,7 +55,8 @@ public class GameManag : MonoBehaviour {
 
 
     //Text変更
-    public Text_Change m_text_change;
+    public Text_Change m_skiptext_change;
+    public Text_Change m_problemtext_change;
     public Text skip_text;
 
 
@@ -64,10 +67,12 @@ public class GameManag : MonoBehaviour {
         correctImage.enabled = false;
         incorrectImage.enabled = false;
         endImage.enabled = false;
+        backImage.enabled = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        emter_push();
     }
 
     //**********************************************
@@ -107,6 +112,7 @@ public class GameManag : MonoBehaviour {
         }
     }
 
+    //ヒントの初期化
     void hint_clear()
     {
         for (int j = 0; j < Hint_num_max; j++)
@@ -116,10 +122,12 @@ public class GameManag : MonoBehaviour {
         }
     }
 
+    //正解・不正解後の処理
     void clear()
     {
         correctImage.enabled = false;
         incorrectImage.enabled = false;
+        backImage.enabled = false;
 
         problem_num++;
         ID++;
@@ -128,9 +136,19 @@ public class GameManag : MonoBehaviour {
         m_inputField.text = "";
 
         startup_hint(1, Hint_num);
-        m_text_change.text_change();
+        m_skiptext_change.text_change();
+        m_problemtext_change.text_change();
 
         m_inputField.ActivateInputField();
+    }
+
+    //エンターキーを押した場合、文字判定をする
+    void emter_push()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            letter_decision();
+        }
     }
 
     //**********************************************
@@ -148,20 +166,21 @@ public class GameManag : MonoBehaviour {
         m_inputField.ActivateInputField();
     }
 
-    //スキップ回数を減らす
-    public void increment_skipped_num()
+    //スキップ機能(次の問題へ移行)
+    public void skip_feature()
     {
         int skip_change = 0;
-        if (skip_change >= 0)
+        if (skip_num > 0)
         {
             skip_num--;
             if (skip_num == skip_change) skip_text.text = "リタイア";
-
+     
             clear();
         }
         else
         {
             endImage.enabled = true;
+            backImage.enabled = true;
         }
     }
 
@@ -171,12 +190,14 @@ public class GameManag : MonoBehaviour {
         if (m_Book.param[ID].answer1 == m_inputField.text || m_Book.param[ID].answer2 == m_inputField.text)
         {
             correctImage.enabled = true;
+            backImage.enabled = true;
             passed_problem_num++;
             Invoke("clear", 3.5f);
         }
         else
         {
             incorrectImage.enabled = true;
+            backImage.enabled = true;
             Invoke("clear", 3.5f);
         }
     }

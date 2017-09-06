@@ -22,14 +22,7 @@ public class Text_Change : MonoBehaviour
     void Start()
     {
         m_text = GetComponent<Text>();
-        if (IsSkip)
-        {
-            m_text.text = m_gamemanag.skip_num.ToString();
-        }
-        else
-        {
-            m_text.text = "第" + m_gamemanag.problem_num.ToString() + "問";
-        }
+        text_change();
     }
 
     // Update is called once per frame
@@ -38,6 +31,10 @@ public class Text_Change : MonoBehaviour
 
     }
 
+    //**********************************************
+    //パブリック関数
+    //**********************************************
+    //スキップ回数、問題数の表示を更新
     public void text_change()
     {
         if (IsSkip)
