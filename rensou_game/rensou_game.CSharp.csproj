@@ -79,9 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Count.cs" />
-    <Compile Include="Assets\Scripts\GameManag.cs" />
-    <Compile Include="Assets\Scripts\LetterSpacing.cs" />
-    <Compile Include="Assets\Scripts\SceneManage.cs" />
+    <Compile Include="Assets\Scripts\Manager\GameManag.cs" />
+    <Compile Include="Assets\Scripts\Manager\SceneManage.cs" />
+    <Compile Include="Assets\Scripts\UI\LetterSpacing.cs" />
+    <Compile Include="Assets\Scripts\UI\Text_Change.cs" />
     <Compile Include="Assets\Terasurware\Classes\Sheet1.cs" />
   </ItemGroup>
   <ItemGroup>

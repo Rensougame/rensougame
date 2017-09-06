@@ -12,45 +12,58 @@ using UnityEngine.UI;
 
 public class GameManag : MonoBehaviour {
 
-    //問題数
+    //現在の問題数
     public int problem_num;
-
-    //残り問題数
-    public int remaining_problem_num;
-
+    //最大問題数
+    public int problem_num_max;
+    //正解した問題数
+    public int passed_problem_num;
     //ヒントを追加した数
     public int hint_additional_num;
-
-    //スキップ数
+    //残りスキップ数
     public int skip_num;
-
-    //スキップした数
-    public int skipped_num;
-
-    //ヒントを出すText
-    public Text[] m_hinttext;
-
-    //excelを読み込んだデータ
-    public Sheet1 m_Book;
-
     //問題のID
     int ID = 0;
 
-    //出ているヒントの数
-    int Hint_num = 3;
 
+    //ヒントを出すText
+    public Text[] m_hinttext;
+    //ヒントのImage
+    public Image[] m_hintimage;
+    //出ているヒントの数
+    public int Hint_num = 2;
     //ヒント最大数
     int Hint_num_max = 5;
+    //ヒントimageのパス
+    const string ROOT = "Textures/";
 
+
+    //正解Image
+    public Image correctImage;
+    //不正解Image
+    public Image incorrectImage;
+    //終了Image
+    public Image endImage;
+
+
+    //excelを読み込んだデータ
+    public Sheet1 m_Book;
     //入力text
     public InputField m_inputField;
 
+
+    //Text変更
+    public Text_Change m_text_change;
+    public Text skip_text;
+
+
     // Use this for initialization
     void Start () {
-        //最初はどちらも等しく
-        remaining_problem_num = problem_num;
         m_inputField.ActivateInputField();
         startup_hint(1, Hint_num);
+        correctImage.enabled = false;
+        incorrectImage.enabled = false;
+        endImage.enabled = false;
     }
 	
 	// Update is called once per frame
@@ -70,18 +83,23 @@ public class GameManag : MonoBehaviour {
             {
                 case 1:
                     m_hinttext[0].text = m_Book.param[ID].hint1;
+                    m_hintimage[0].sprite = Resources.Load<Sprite>( string.Concat(ROOT, m_Book.param[ID].image1) );
                     break;
                 case 2:
                     m_hinttext[1].text = m_Book.param[ID].hint2;
+                    m_hintimage[1].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image2));
                     break;
                 case 3:
                     m_hinttext[2].text = m_Book.param[ID].hint3;
+                    m_hintimage[2].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image3));
                     break;
                 case 4:
                     m_hinttext[3].text = m_Book.param[ID].hint4;
+                    m_hintimage[3].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image4));
                     break;
                 case 5:
                     m_hinttext[4].text = m_Book.param[ID].hint5;
+                    m_hintimage[4].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image5));
                     break;
                 default:
                     break;
@@ -89,15 +107,35 @@ public class GameManag : MonoBehaviour {
         }
     }
 
+    void hint_clear()
+    {
+        for (int j = 0; j < Hint_num_max; j++)
+        {
+            m_hinttext[j].text = "";
+            m_hintimage[j].sprite = null;
+        }
+    }
+
+    void clear()
+    {
+        correctImage.enabled = false;
+        incorrectImage.enabled = false;
+
+        problem_num++;
+        ID++;
+
+        hint_clear();
+        m_inputField.text = "";
+
+        startup_hint(1, Hint_num);
+        m_text_change.text_change();
+
+        m_inputField.ActivateInputField();
+    }
+
     //**********************************************
     //パブリック関数
     //**********************************************
-    //残り問題数を減らす
-    public void decrement_remaining_problem_num()
-    {
-        remaining_problem_num--;
-    }
-
     //ヒントを追加(追加した数を数える)
     public void adding_hint()
     {
@@ -110,10 +148,21 @@ public class GameManag : MonoBehaviour {
         m_inputField.ActivateInputField();
     }
 
-    //スッキプした数を増やす
+    //スキップ回数を減らす
     public void increment_skipped_num()
     {
-        skipped_num++;
+        int skip_change = 0;
+        if (skip_change >= 0)
+        {
+            skip_num--;
+            if (skip_num == skip_change) skip_text.text = "リタイア";
+
+            clear();
+        }
+        else
+        {
+            endImage.enabled = true;
+        }
     }
 
     //文字判定
@@ -121,11 +170,14 @@ public class GameManag : MonoBehaviour {
     {
         if (m_Book.param[ID].answer1 == m_inputField.text || m_Book.param[ID].answer2 == m_inputField.text)
         {
-            Debug.Log("正解！");
+            correctImage.enabled = true;
+            passed_problem_num++;
+            Invoke("clear", 3.5f);
         }
         else
         {
-            Debug.Log("不正解！");
+            incorrectImage.enabled = true;
+            Invoke("clear", 3.5f);
         }
     }
 }

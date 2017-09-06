@@ -60,12 +60,17 @@ public class Book_importer : AssetPostprocessor
 			
 					cell = row.GetCell(0); p.ID = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(1); p.hint1 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(2); p.hint2 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(3); p.hint3 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(4); p.hint4 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(5); p.hint5 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(6); p.answer1 = (cell == null ? "" : cell.StringCellValue);
-					cell = row.GetCell(7); p.answer2 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(2); p.image1 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(3); p.hint2 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(4); p.image2 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(5); p.hint3 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(6); p.image3 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(7); p.hint4 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(8); p.image4 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(9); p.hint5 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(10); p.image5 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(11); p.answer1 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(12); p.answer2 = (cell == null ? "" : cell.StringCellValue);
 
                         data.param.Add(p);
                     }
