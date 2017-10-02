@@ -137,7 +137,7 @@ public class GameManag : MonoBehaviour {
     //エンターキーを押した場合、文字判定をする
     void emter_push()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             letter_decision();
         }
@@ -234,7 +234,7 @@ public class GameManag : MonoBehaviour {
     //文字判定
     public void letter_decision()
     {
-        if (m_Book.param[ID].answer1 == m_inputField.text || m_Book.param[ID].answer2 == m_inputField.text)
+        if (m_Book.param[ID].answer1 == m_inputField.text)
         {
             correctImage.enabled = true;
             backImage.enabled = true;
@@ -265,5 +265,9 @@ public class GameManag : MonoBehaviour {
                 Invoke("clear", activeImage);
             }
         }
+    }
+    public void a()
+    {
+        m_inputField.text = m_inputField.textComponent.text;
     }
 }

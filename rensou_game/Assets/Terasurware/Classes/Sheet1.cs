@@ -22,6 +22,5 @@ public class Sheet1 : ScriptableObject
 		public string hint5;
 		public string image5;
 		public string answer1;
-		public string answer2;
 	}
 }
