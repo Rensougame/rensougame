@@ -7,10 +7,10 @@ using NPOI.HSSF.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
 
-public class Book_importer : AssetPostprocessor
+public class QA_importer : AssetPostprocessor
 {
-    private static readonly string filePath = "Assets/ExcelData/Book.xlsx";
-    private static readonly string[] sheetNames = { "Sheet1", };
+    private static readonly string filePath = "Assets/ExcelData/QA.xlsx";
+    private static readonly string[] sheetNames = {  };
     
     static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
@@ -33,10 +33,10 @@ public class Book_importer : AssetPostprocessor
                     var exportPath = "Assets/ExcelData/" + sheetName + ".asset";
                     
                     // check scriptable object
-                    var data = (Sheet1)AssetDatabase.LoadAssetAtPath(exportPath, typeof(Sheet1));
+                    var data = (Entity_Sheet1)AssetDatabase.LoadAssetAtPath(exportPath, typeof(Entity_Sheet1));
                     if (data == null)
                     {
-                        data = ScriptableObject.CreateInstance<Sheet1>();
+                        data = ScriptableObject.CreateInstance<Entity_Sheet1>();
                         AssetDatabase.CreateAsset((ScriptableObject)data, exportPath);
                         data.hideFlags = HideFlags.NotEditable;
                     }
@@ -56,9 +56,9 @@ public class Book_importer : AssetPostprocessor
                         IRow row = sheet.GetRow(i);
                         ICell cell = null;
                         
-                        var p = new Sheet1.Param();
+                        var p = new Entity_Sheet1.Param();
 			
-					cell = row.GetCell(0); p.ID = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(0); p.ID = (cell == null ? 0.0 : cell.NumericCellValue);
 					cell = row.GetCell(1); p.hint1 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(2); p.image1 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(3); p.hint2 = (cell == null ? "" : cell.StringCellValue);

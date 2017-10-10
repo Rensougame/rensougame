@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Sheet1 : ScriptableObject
+public class Entity_Sheet1 : ScriptableObject
 {	
 	public List<Param> param = new List<Param> ();
 
@@ -10,7 +10,7 @@ public class Sheet1 : ScriptableObject
 	public class Param
 	{
 		
-		public int ID;
+		public double ID;
 		public string hint1;
 		public string image1;
 		public string hint2;

@@ -12,8 +12,12 @@ using UnityEngine.UI;
 
 public class GameManag : MonoBehaviour {
 
+    [Header("問題数関係------------------------------------------")]
     //現在の問題数
     public int problem_num = 1;
+    //現在の残り問題
+    [System.NonSerialized]
+    public int problem_num_remainder;
     //最大問題数
     public int problem_num_max = 10;
     //正解した問題数
@@ -25,6 +29,7 @@ public class GameManag : MonoBehaviour {
     //問題のID
     int ID = 0;
 
+    [Header("ヒント関係------------------------------------------")]
 
     //ヒントを出すText
     public Text[] m_hinttext;
@@ -39,6 +44,7 @@ public class GameManag : MonoBehaviour {
     //ヒントimageのパス
     const string ROOT = "Textures/";
 
+    [Header("背景・正解・不正解関係------------------------------------------")]
 
     //正解Image
     public Image correctImage;
@@ -51,17 +57,21 @@ public class GameManag : MonoBehaviour {
     //Image表示時間
     public float activeImage;
 
+    [Header("excel・入力関係------------------------------------------")]
+
     //excelを読み込んだデータ
-    public Sheet1 m_Book;
+    public Entity_Sheet1 m_QA;
     //入力text
     public InputField m_inputField;
 
+    [Header("UIテキスト関係------------------------------------------")]
 
     //Text変更
     public Text_Change m_skiptext_change;
     public Text_Change m_problemtext_change;
     public Text skip_text;
 
+    [Header("パーティクル関係------------------------------------------")]
 
     //ランダム重複検査用
     bool[] rand_duplication;
@@ -69,10 +79,18 @@ public class GameManag : MonoBehaviour {
     //パーティクル(紙吹雪)
     public ParticleSystem m_confetti;
 
+    [Header("サウンド関係------------------------------------------")]
+
+    //サウンド関係
+    public AudioClip m_correct;
+    public AudioClip m_wrong;
+    AudioSource Source;
+
 
     // Use this for initialization
-    void Start () {
-        rand_duplication = new bool[m_Book.param.Count];
+    void Start()
+    {
+        rand_duplication = new bool[m_QA.param.Count];
         ID_random();
         m_inputField.ActivateInputField();
         startup_hint(1, Hint_num);
@@ -80,10 +98,13 @@ public class GameManag : MonoBehaviour {
         incorrectImage.enabled = false;
         endImage.enabled = false;
         backImage.enabled = false;
+        problem_num_remainder = problem_num_max - problem_num;
+        Source = GetComponent<AudioSource>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         emter_push();
     }
 
@@ -99,24 +120,24 @@ public class GameManag : MonoBehaviour {
             switch (num)
             {
                 case 1:
-                    m_hinttext[0].text = m_Book.param[ID].hint1;
-                    m_hintimage[0].sprite = Resources.Load<Sprite>( string.Concat(ROOT, m_Book.param[ID].image1) );
+                    m_hinttext[0].text = m_QA.param[ID].hint1;
+                    m_hintimage[0].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image1));
                     break;
                 case 2:
-                    m_hinttext[1].text = m_Book.param[ID].hint2;
-                    m_hintimage[1].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image2));
+                    m_hinttext[1].text = m_QA.param[ID].hint2;
+                    m_hintimage[1].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image2));
                     break;
                 case 3:
-                    m_hinttext[2].text = m_Book.param[ID].hint3;
-                    m_hintimage[2].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image3));
+                    m_hinttext[2].text = m_QA.param[ID].hint3;
+                    m_hintimage[2].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image3));
                     break;
                 case 4:
-                    m_hinttext[3].text = m_Book.param[ID].hint4;
-                    m_hintimage[3].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image4));
+                    m_hinttext[3].text = m_QA.param[ID].hint4;
+                    m_hintimage[3].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image4));
                     break;
                 case 5:
-                    m_hinttext[4].text = m_Book.param[ID].hint5;
-                    m_hintimage[4].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_Book.param[ID].image5));
+                    m_hinttext[4].text = m_QA.param[ID].hint5;
+                    m_hintimage[4].sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image5));
                     break;
                 default:
                     break;
@@ -146,7 +167,7 @@ public class GameManag : MonoBehaviour {
     //問題のランダム
     void ID_random()
     {
-        ID = Random.Range(0, m_Book.param.Count);
+        ID = Random.Range(0, m_QA.param.Count);
         if (rand_duplication[ID] == true)
         {
             ID_random();
@@ -168,13 +189,14 @@ public class GameManag : MonoBehaviour {
         m_confetti.Stop();
 
         problem_num++;
+        problem_num_remainder = problem_num_max - problem_num;
         ID_random();
         Hint_num = Hint_num_first;
 
         hint_clear();
         m_inputField.text = "";
 
-        if (problem_num >= m_Book.param.Count)
+        if (problem_num >= m_QA.param.Count)
         {
             skip_text.text = "リタイア";
         }
@@ -218,11 +240,11 @@ public class GameManag : MonoBehaviour {
     public void skip_feature()
     {
         int skip_change = 0;
-        if (skip_num > 0 && problem_num < m_Book.param.Count)
+        if (skip_num > 0 && problem_num < m_QA.param.Count)
         {
             skip_num--;
             if (skip_num == skip_change) skip_text.text = "リタイア";
-     
+
             clear();
         }
         else
@@ -234,15 +256,19 @@ public class GameManag : MonoBehaviour {
     //文字判定
     public void letter_decision()
     {
-        if (m_Book.param[ID].answer1 == m_inputField.text)
+        if (m_QA.param[ID].answer1 == m_inputField.text)
         {
             correctImage.enabled = true;
             backImage.enabled = true;
             passed_problem_num++;
 
             m_confetti.Play();
+            Source.clip = m_correct;
+            Source.Play();
 
-            if (problem_num >= m_Book.param.Count)
+
+
+            if (problem_num >= m_QA.param.Count)
             {
                 Invoke("game_end", activeImage);
             }
@@ -256,7 +282,10 @@ public class GameManag : MonoBehaviour {
             incorrectImage.enabled = true;
             backImage.enabled = true;
 
-            if (problem_num >= m_Book.param.Count)
+            Source.clip = m_wrong;
+            Source.Play();
+
+            if (problem_num >= m_QA.param.Count)
             {
                 Invoke("game_end", activeImage);
             }
@@ -265,9 +294,5 @@ public class GameManag : MonoBehaviour {
                 Invoke("clear", activeImage);
             }
         }
-    }
-    public void a()
-    {
-        m_inputField.text = m_inputField.textComponent.text;
     }
 }

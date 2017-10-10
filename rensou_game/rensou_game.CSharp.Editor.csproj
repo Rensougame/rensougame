@@ -135,7 +135,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Terasurware\Classes\Editor\Book_importer.cs" />
+    <Compile Include="Assets\Terasurware\Classes\Editor\QA_importer.cs" />
     <Compile Include="Assets\Terasurware\Editor\ExcelImporterMaker.cs" />
   </ItemGroup>
   <ItemGroup>
