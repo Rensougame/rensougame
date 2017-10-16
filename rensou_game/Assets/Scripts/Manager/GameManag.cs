@@ -100,6 +100,7 @@ public class GameManag : MonoBehaviour {
         backImage.enabled = false;
         problem_num_remainder = problem_num_max - problem_num;
         Source = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
