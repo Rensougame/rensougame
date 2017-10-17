@@ -80,10 +80,12 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Count.cs" />
     <Compile Include="Assets\Scripts\Manager\GameManag.cs" />
-    <Compile Include="Assets\Scripts\Manager\InputField_override.cs" />
     <Compile Include="Assets\Scripts\Manager\SceneManage.cs" />
+    <Compile Include="Assets\Scripts\UI\InputField_override.cs" />
     <Compile Include="Assets\Scripts\UI\LetterSpacing.cs" />
     <Compile Include="Assets\Scripts\UI\Text_Change.cs" />
+    <Compile Include="Assets\Scripts\UserData\AccessServer.cs" />
+    <Compile Include="Assets\Scripts\UserData\Userdata.cs" />
     <Compile Include="Assets\Terasurware\Classes\Entity_Sheet1.cs" />
   </ItemGroup>
   <ItemGroup>
