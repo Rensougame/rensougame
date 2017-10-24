@@ -12,12 +12,13 @@ public class AccessServer : MonoBehaviour {
 
     private Userdata data;      //ユーザ情報保持用クラス
 
-    public InputField m_if_ID, m_if_pass;
+    public InputField m_if_ID, m_if_pass;   //ログイン用入力
 
-    public List<Text> text = new List<Text>();
+    public List<Text> text = new List<Text>();  //表示UI
+
+    public Text m_textpoint;
 
     void Start () {
-        //StartCoroutine(Upload());
     }
 
     IEnumerator Login(string ID, string pass)
@@ -44,14 +45,14 @@ public class AccessServer : MonoBehaviour {
             }
             else
             {
-               //成功　結果を受け取る
-               string str = www.downloadHandler.text;
-               Debug.Log(www.responseCode.ToString() + ":" + str);
+                //成功　結果を受け取る
+                string str = www.downloadHandler.text;
+                Debug.Log(www.responseCode.ToString() + ":" + str);
 
-               // 取得したデータをクラスにセット
-               data = JsonUtility.FromJson<Userdata>(str);
+                // 取得したデータをクラスにセット
+                data = JsonUtility.FromJson<Userdata>(str);
 
-               Debug.Log(data.access_token); 
+                Debug.Log(data.access_token);
             }
 
             var user_request = new UnityWebRequest("http://testgame.4353p-club.com/user/info", "POST");
@@ -72,93 +73,95 @@ public class AccessServer : MonoBehaviour {
                 string str_user = user_request.downloadHandler.text;
 
                 // 取得したデータをクラスにセット
-                data = JsonUtility.FromJson<Userdata>(str_user);
+                JsonUtility.FromJsonOverwrite(str_user, data);
 
                 Debug.Log("Status Code: " + user_request.responseCode);
 
-                ToTextWrite();
+                ToTextWrite_User();
+            }
+        }
+    }
+
+    /// <summary>
+    /// ゲーム内情報を取得または無い場合は新規登録
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GetUserData(string m_point)
+    {
+        int p = int.Parse(m_point);
+        //当該ゲーム情報取得
+        GameData gamedata_request = new GameData
+        {
+            game_id = 11,    //ゲームID
+        };
+        data.data = gamedata_request;
+        var request = new UnityWebRequest("http://testgame.4353p-club.com/info/user", "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(data.SaveToString());
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.Send();
+
+        if (request.isError)
+        {
+            //エラー
+            Debug.Log(request.error);
+        }
+        else
+        {
+            string str_2 = request.downloadHandler.text;
+            data = JsonUtility.FromJson<Userdata>(str_2);
+            Debug.Log(data.status);
+            Debug.Log(request.responseCode.ToString() + ":" + str_2);
+
+            if (data.status == 0)
+            {
+                //当該ゲーム情報登録
+                GameData gamedata_create = new GameData
+                {
+                    game_id = 11,    //ゲームID
+                    value1 = "GET",    //固有値1
+                    value2 = "",    //固有値2
+                    value3 = "",    //固有値3
+                    point = p,    //ポイント（スコア）
+                };
+                data.data = gamedata_create;
+                var create = new UnityWebRequest("http://testgame.4353p-club.com/info/user/create", "POST");
+                byte[] bodyRaw_create = Encoding.UTF8.GetBytes(data.SaveToString());
+                create.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw_create);
+                create.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+                create.SetRequestHeader("Content-Type", "application/json");
+
+                yield return create.Send();
+
+                //デバック
+                if (create.isError)
+                {
+                    //エラー
+                    Debug.Log(create.error);
+                }
+                else
+                {
+                    //成功　結果を受け取る
+                    string str = create.downloadHandler.text;
+                    Debug.Log(create.responseCode.ToString() + ":" + str);
+                }
             }
 
+            // 取得したデータをクラスにセット
+            data = JsonUtility.FromJson<Userdata>(str_2);
+            Debug.Log(data.game_info.value1);
+            Debug.Log(data.game_info.point);
+            Debug.Log(request.responseCode.ToString() + ":" + str_2);
 
 
-            ////当該ゲーム情報取得
-            //GameData gamedata_request = new GameData
-            //{
-            //    game_id = 11,    //ゲームID
-            //};
-            //data.data = gamedata_request;
-            //var request = new UnityWebRequest("http://testgame.4353p-club.com/info/user", "POST");
-            //byte[] bodyRaw = Encoding.UTF8.GetBytes(data.SaveToString());
-            //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-            //request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            //request.SetRequestHeader("Content-Type", "application/json");
-
-            //yield return request.Send();
-
-            //if(request.isError)
-            //{
-            //    //エラー
-            //    Debug.Log(request.error);
-            //}
-            //else
-            //{
-            //    string str_2 = request.downloadHandler.text;
-            //    data = JsonUtility.FromJson<Userdata>(str_2);
-
-            //    if (data.status == 0)
-            //    {
-            //        //当該ゲーム情報登録
-            //        GameData gamedata_create = new GameData
-            //        {
-            //            game_id = 11,    //ゲームID
-            //            point = 100,    //ポイント（スコア）
-            //        };
-
-            //        GameInfo gameinfo_create = new GameInfo
-            //        {
-            //            value1 = "GET",    //固有値1
-            //            value2 = "",    //固有値2
-            //            value3 = "",    //固有値3
-            //        };
-            //        data.data = gamedata_create;
-            //        data.game_info = gameinfo_create;
-            //        var create = new UnityWebRequest("http://testgame.4353p-club.com/info/user/create", "POST");
-            //        byte[] bodyRaw_create = Encoding.UTF8.GetBytes(data.SaveToString());
-            //        create.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw_create);
-            //        create.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            //        create.SetRequestHeader("Content-Type", "application/json");
-
-            //        yield return create.Send();
-
-            //        //デバック
-            //        if (create.isError)
-            //        {
-            //            //エラー
-            //            Debug.Log(create.error);
-            //        }
-            //        else
-            //        {
-            //            //成功　結果を受け取る
-            //            string str = create.downloadHandler.text;
-            //            Debug.Log(create.responseCode.ToString() + ":" + str);
-            //        }
-            //    }
-
-            //    Debug.Log("Status Code: " + request.responseCode);
-                
-
-            //    // 取得したデータをクラスにセット
-            //    data = JsonUtility.FromJson<Userdata>(str_2);
-            //    Debug.Log(data.game_info.value1);
-            //    Debug.Log(data.data.point);
-            //    Debug.Log(request.responseCode.ToString() + ":" + str_2);
-            //}
-
-            
-
-
-            //ゲーム情報取得処理ここまで
+            ToTextWrite_updeta();
         }
+    }
+
+
+        //ゲーム情報取得処理ここまで
 
         ////当該ゲーム情報登録
         //GameData gamedata_create = new GameData
@@ -244,7 +247,6 @@ public class AccessServer : MonoBehaviour {
 
 
         ////ゲーム情報取得処理ここまで
-    }
 
     IEnumerator Ranking()
     {
@@ -275,27 +277,47 @@ public class AccessServer : MonoBehaviour {
         }
     }
 
-    //確定したらログイン処理
-    public void EnterPush()
+    /// <summary>
+    /// 確定したらログイン処理
+    /// </summary>
+    public void EnterPushLogin()
     {
         StartCoroutine(Login(m_if_ID.text, m_if_pass.text));
     }
 
+
     /// <summary>
     /// ランキングボタンが押されたらサーバー通信でランキングを取得
     /// </summary>
-    public void ButtonPush()
+    public void ButtonPushRanking()
     {
         StartCoroutine(Ranking());
     }
+
+
+    /// <summary>
+    /// ボタンが押されたらサーバー通信でランキングを取得
+    /// </summary>
+    public void ButtonPushUserData()
+    {
+        StartCoroutine(GetUserData(m_textpoint.text));
+    }
+
+
     /// <summary>
     /// ユーザ情報をtextに書き込む
     /// </summary>
-    void ToTextWrite()
+    void ToTextWrite_User()
     {
         text[0].text = data.user.id.ToString();
         text[1].text = data.user.name.ToString();
         text[2].text = data.user.room.name.ToString();
+    }
+
+    void ToTextWrite_updeta()
+    {
+        text[3].text = data.game_info.point.ToString();
+        text[4].text = data.game_info.value1.ToString();
     }
 
     //--------------------------------------------------------------------

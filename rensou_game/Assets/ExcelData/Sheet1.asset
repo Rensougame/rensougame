@@ -433,7 +433,7 @@ MonoBehaviour:
     image5: images
     answer1: "\u305D\u3089"
   - ID: 35
-    hint1: "\u3066\u3058\u3087\u3046"
+    hint1: "\u3066\u3061\u3087\u3046"
     image1: images
     hint2: "\u3044\u306C"
     image2: images

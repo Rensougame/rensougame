@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Userdata_space
 {
+    //ゲーム内ユーザーデータ登録・更新・ランキング取得用
     [System.Serializable]
     public class GameData
     {
@@ -18,6 +19,7 @@ namespace Userdata_space
         public int limit;
     }
 
+    //ログイン・ユーザー情報取得用
     [System.Serializable]
     public class Userdata
     {
@@ -30,13 +32,16 @@ namespace Userdata_space
 
         public GameData data;
         public User user;
+        public GameInfo game_info;
+
+        public int status;
 
         public string SaveToString()
         {
             return JsonUtility.ToJson(this);
         }
     }
-
+    //ユーザー情報
     [System.Serializable]
     public class User
     {
@@ -46,6 +51,7 @@ namespace Userdata_space
         public int icon_type;
     }
 
+    //ユーザーの部屋情報
     [System.Serializable]
     public class Room
     {
@@ -55,15 +61,19 @@ namespace Userdata_space
         public int room_id;
     }
 
+    //ゲーム側が持っているユーザー情報
     [System.Serializable]
     public class GameInfo
     {
-        public int menber_id;
+        public int game_id;
+        public int id;
         public string value1;
         public string value2;
         public string value3;
+        public int point;
     }
 
+    //ランキング情報保持用
     [System.Serializable]
     public class Ranking
     {
@@ -74,4 +84,5 @@ namespace Userdata_space
         public string value3;
         public int point;
     }
+
 }
