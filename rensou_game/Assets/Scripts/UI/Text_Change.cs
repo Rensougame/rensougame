@@ -43,7 +43,7 @@ public class Text_Change : MonoBehaviour
         }
         else
         {
-            m_text.text = m_gamemanag.problem_num_remainder.ToString() + "問";
+            m_text.text = m_gamemanag.problem_num_remainder.ToString();
         }
     }
 }

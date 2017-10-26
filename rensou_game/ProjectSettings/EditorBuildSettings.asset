@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ShimotoriSENYO/TestScene.unity
+    path: Assets/Scenes/ShimotoriSENYO/MainScene.unity
     guid: 72424e913704f5348b5b219faa4820fd
+  - enabled: 1
+    path: Assets/Scenes/ShimotoriSENYO/ResultScene.unity
+    guid: 00000000000000000000000000000000
