@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Manager\SceneManage.cs" />
     <Compile Include="Assets\Scripts\Manager\SingletonMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Result\ResultText.cs" />
+    <Compile Include="Assets\Scripts\UI\Button_SceneManege.cs" />
     <Compile Include="Assets\Scripts\UI\InputField_override.cs" />
     <Compile Include="Assets\Scripts\UI\LetterSpacing.cs" />
     <Compile Include="Assets\Scripts\UI\Text_Change.cs" />

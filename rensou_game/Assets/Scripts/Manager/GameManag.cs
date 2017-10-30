@@ -63,6 +63,11 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     //Image表示時間
     public float activeImage;
 
+    //答え表示Text
+    public Text m_AnswerText;
+    //答え表示Image
+    public Image m_AnswerImage;
+
     [Header("excel・入力関係------------------------------------------")]
 
     //excelを読み込んだデータ
@@ -76,12 +81,12 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     public Text_Change m_skiptext_change;
     public Text_Change m_problemtext_change;
     public Text skip_text;
-    public Text count_text;
+
+    [Header("UIイメージ関係------------------------------------------")]
+
+    public Image[] count_text = new Image[4];
 
     [Header("パーティクル関係------------------------------------------")]
-
-    //ランダム重複検査用
-    bool[] rand_duplication;
 
     //パーティクル(紙吹雪)
     public ParticleSystem m_confetti;
@@ -107,6 +112,9 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     //xlsx列t調整
     int adjustment = 1;
 
+    //ランダム重複検査用
+    bool[] rand_duplication;
+
     // Use this for initialization
     void Start()
     {
@@ -117,9 +125,14 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
         m_inputField.ActivateInputField();
 
         correctImage.enabled = false;
-        incorrectImage.enabled = false;
+        incorrectImage.gameObject.SetActive(false);
         endImage.SetActive(false);
         backImage.enabled = false;
+
+        for (int i = 0; i < count_text.Length; i++)
+        {
+            count_text[i].enabled = false;
+        }
 
         problem_num_remainder = problem_num_max - problem_num;
         Source = GetComponent<AudioSource>();
@@ -221,7 +234,7 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     {
         //正解・不正解の非表示
         correctImage.enabled = false;
-        incorrectImage.enabled = false;
+        incorrectImage.gameObject.SetActive(false);
         backImage.enabled = false;
 
         //パーティクル停止
@@ -255,7 +268,7 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     void game_end()
     {
         correctImage.enabled = false;
-        incorrectImage.enabled = false;
+        incorrectImage.gameObject.SetActive(false);
 
         m_confetti.Clear();
         m_confetti.Stop();
@@ -370,11 +383,14 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
         {
             Timeflg = false;
 
-            incorrectImage.enabled = true;
+            incorrectImage.gameObject.SetActive(true);
             backImage.enabled = true;
 
             Source.clip = m_wrong;
             Source.Play();
+            
+            m_AnswerText.text = m_QA.param[ID].answer1;
+            m_AnswerImage.sprite = Resources.Load<Sprite>(string.Concat(ROOT, m_QA.param[ID].image6));
 
             if (problem_num >= m_QA.param.Count)
             {
@@ -407,23 +423,24 @@ public class GameManag : SingletonMonoBehaviour<GameManag>
     //カウントダウン
     IEnumerator CountdownCoroutine()
     {
-        count_text.gameObject.SetActive(true);
         startup_hint(1, Hint_num);
 
-        count_text.text = "3";
+        count_text[0].enabled = true;
         yield return new WaitForSeconds(1.0f);
 
-        count_text.text = "2";
+        count_text[0].enabled = false;
+        count_text[1].enabled = true;
         yield return new WaitForSeconds(1.0f);
 
-        count_text.text = "1";
+        count_text[1].enabled = false;
+        count_text[2].enabled = true;
         yield return new WaitForSeconds(1.0f);
 
-        count_text.text = "スタート!";
+        count_text[2].enabled = false;
+        count_text[3].enabled = true;
+        yield return new WaitForSeconds(1.0f);
+        count_text[3].enabled = false;
 
-        count_text.text = "";
-        count_text.gameObject.SetActive(false);
-        
         Timeflg = true;
     }
 }

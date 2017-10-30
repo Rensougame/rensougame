@@ -22,5 +22,6 @@ public class Entity_Sheet1 : ScriptableObject
 		public string hint5;
 		public string image5;
 		public string answer1;
+		public string image6;
 	}
 }

@@ -70,6 +70,7 @@ public class QA_importer : AssetPostprocessor
 					cell = row.GetCell(9); p.hint5 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(10); p.image5 = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(11); p.answer1 = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(12); p.image6 = (cell == null ? "" : cell.StringCellValue);
 
                         data.param.Add(p);
                     }
